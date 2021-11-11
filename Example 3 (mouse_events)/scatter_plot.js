@@ -41,10 +41,6 @@ function scatter_plot(X,Y,markersize,
             d3.selectAll(`circle`).classed("highlighted",false).transition().duration(1000).ease(d3.easeBounceOut).attr("r",markersize)
         })
 
-
-
-
-
     // x and y Axis function
     let x_axis = d3.axisBottom(xScale).ticks(4)
     let y_axis = d3.axisLeft(yScale).ticks(4)
@@ -77,5 +73,4 @@ function scatter_plot(X,Y,markersize,
         .attr("text-anchor","middle")
         .text(title)
         .attr("class","plotTitle")
-
 }

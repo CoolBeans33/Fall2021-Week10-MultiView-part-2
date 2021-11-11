@@ -25,7 +25,21 @@ function scatter_plot(X,Y,markersize,
         .attr("class",function (d,i){
             return `cls_${i}`})
         .attr("r",markersize)
-        .style("fill",function (d,i){return colorScale(ColorData[i])})
+        .style("fill",function (d,i)
+            {
+                if(ColorData[i] == 0)
+                {
+                    return "#a52a2a"
+                }
+                if(ColorData[i] == 1)
+                {
+                    return "#4682b4"
+                }
+                if(ColorData[i] == 2)
+                {
+                    return "#76566f"
+                }
+            })
         .on("mouseenter",function (){
             let mouse_selected_element_class=d3.select(this).attr('class')
             d3.selectAll(`circle`).classed("highlighted",false).attr("r",markersize)
@@ -35,7 +49,6 @@ function scatter_plot(X,Y,markersize,
                 .duration(1000)
                 .ease(d3.easeBounceOut)
                 .attr("r",markersize*4)
-
         })
         .on("mouseleave",function(){
             d3.selectAll(`circle`).classed("highlighted",false).transition().duration(1000).ease(d3.easeBounceOut).attr("r",markersize)
@@ -67,9 +80,6 @@ function scatter_plot(X,Y,markersize,
         .attr("text-anchor","middle")
         .text(yLabel)
 
-    axis.append("g")
-        .attr
-
     // Title
     axis.append('text')
         .attr('x',500)
@@ -77,5 +87,14 @@ function scatter_plot(X,Y,markersize,
         .attr("text-anchor","middle")
         .text(title)
         .attr("class","plotTitle")
+
+    console.log(ColorData)
+    // Handmade legend
+    axis.append("circle").attr("cx",200).attr("cy",130).attr("r", 6).style("fill", "#a52a2a")
+    axis.append("circle").attr("cx",200).attr("cy",160).attr("r", 6).style("fill", "#4682b4")
+    axis.append("circle").attr("cx",200).attr("cy",190).attr("r", 6).style("fill", "#76566f")
+    axis.append("text").attr("x", 220).attr("y", 135).text("Torgersen").style("font-size", "15px").attr("alignment-baseline","top")
+    axis.append("text").attr("x", 220).attr("y", 160).text("Biscoe").style("font-size", "15px").attr("alignment-baseline","middle")
+    axis.append("text").attr("x", 220).attr("y", 195).text("Dream").style("font-size", "15px").attr("alignment-baseline","bottom")
 
 }
