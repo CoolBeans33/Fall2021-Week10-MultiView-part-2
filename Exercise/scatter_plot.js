@@ -21,10 +21,12 @@ function scatter_plot(X,Y,markersize,
         .append('g')
         .attr('transform', function(d,i) {
             return `translate(${xScale(X[i])}, ${yScale(Y[i])})`})
-        .append('circle')
+        .append('circle').attr("r",function(d,i)
+        {
+            return markersize[i]/20
+        })
         .attr("class",function (d,i){
             return `cls_${i}`})
-        .attr("r",markersize)
         .style("fill",function (d,i)
             {
                 if(ColorData[i] == 0)
@@ -42,16 +44,30 @@ function scatter_plot(X,Y,markersize,
             })
         .on("mouseenter",function (){
             let mouse_selected_element_class=d3.select(this).attr('class')
-            d3.selectAll(`circle`).classed("highlighted",false).attr("r",markersize)
+            d3.selectAll(`circle`).classed("highlighted",false).attr("r",function(d, i)
+            {
+                return markersize[i]/20
+            })
             d3.selectAll(`.${mouse_selected_element_class}`)
                 .classed("highlighted",true)
                 .transition()
                 .duration(1000)
                 .ease(d3.easeBounceOut)
-                .attr("r",markersize*4)
+                .attr("r",function(d, i)
+                {
+                    return (markersize[i]/20)*4
+                })
         })
         .on("mouseleave",function(){
-            d3.selectAll(`circle`).classed("highlighted",false).transition().duration(1000).ease(d3.easeBounceOut).attr("r",markersize)
+            d3.selectAll(`circle`)
+            .classed("highlighted",false)
+            .transition()
+            .duration(1000)
+            .ease(d3.easeBounceOut)
+            .attr("r",function(d, i)
+            {
+                return markersize[i]/20
+            })
         })
 
     // x and y Axis function
@@ -88,7 +104,9 @@ function scatter_plot(X,Y,markersize,
         .text(title)
         .attr("class","plotTitle")
 
+
     console.log(ColorData)
+    
     // Handmade legend
     axis.append("circle").attr("cx",200).attr("cy",130).attr("r", 6).style("fill", "#a52a2a")
     axis.append("circle").attr("cx",200).attr("cy",160).attr("r", 6).style("fill", "#4682b4")
